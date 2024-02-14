@@ -19,6 +19,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
 @app.route('/search', methods=['POST'])
 def search():
     query = request.form.get('query')
@@ -27,7 +28,8 @@ def search():
 
 def search_spotify(query):
     results = sp.search(q=query, type='track', limit=5)
-    return results['tracks']['items']
+
+    return results['tracks']['items']['id']
 
 if __name__ == '__main__':
     app.run(debug=True)
