@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search for a Song</title>
+</head>
+<body>
+    <h1>Search for a Song and Artist name</h1>
+    <form action="{{ url_for('generate_recommendations') }}" method="post">
+        <label for="song_name">Enter the name of a song:</label>
+        <input type="text" id="song_name" name="song_name" required>
+        <button type="submit">Generate Recommendations</button>
+    </form>
+</body>
+</html>
