@@ -9,7 +9,7 @@
     <h1>Your Recommended Playlist</h1>
     <ul>
         {% for track in playlist_data %}
-            <li>{{ track['name'] }} - {{ track['artists'][0]['name'] }}</li>
+            <p>{{ track['name'] }} by {{ track['artists'][0]['name'] }}</p>
         {% endfor %}
     </ul>
 </body>

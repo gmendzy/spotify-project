@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Questionnaire</title>
+</head>
+
+<body>
+    <h1>Question 1</h1>
+    <form action="/generate_playlist_from_questionnaire" method="post">
+        <label for="mood">What's your mood?</label>
+        <select id="mood" name="mood">
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <input type="submit" value="Generate Playlist" />
+        </select>
+        <label for="location">Where are you?</label>
+        <select id="location" name="location">
+            <option value="gym">Gym</option>
+            <option value="beach">Beach</option>
+            <input type="submit" value="Generate Playlist" />
+    </form>
+</body>
+
+</html>

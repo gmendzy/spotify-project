@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".result").click(function(){
+                $(".result").removeClass("selected");
+                $(this).addClass("selected");
+                $('#selected_song').val($(this).data('id'));
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class ='form-container'>
+    <form method="POST" action="/choose_song">
+        {% for song in results %}
+            <div class = "result">
+                <img src="{{ song.album.images[0].url }}" alt="{{ song.name}} album cover">
+                <input type="hidden" id= "{{ song.id }}"  name="song_id" value="{{ song.id }}">
+                <label for = "{{ song.id }}">{{ song.name }} by {{ song.artists[0].name }}</label><br>
+            </div>
+        {% endfor %}
+        <input type="submit" class ="search-button" value = "Start Questionnaire">
+    </form>
+    
+</body>
+</html>

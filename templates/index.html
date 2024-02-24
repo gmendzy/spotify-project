@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div class ="form-container">
+        <form action="/search" method="POST">
+            <label for="song_name">Enter Song Name:</label>
+            <input type="text" class="search-bar" id="song_name" name="song_name" placeholder="Enter your favorite song!">
+            <button type="submit" class = "search-button">Search</button>
+        </form>
+    </div> 
+</body>
+</html>
+
