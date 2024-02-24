@@ -16,6 +16,7 @@ sp = Spotify(client_credentials_manager=client_credentials_manager)
 app = Flask(__name__)
 
 saved_song = {}
+saved_genre ={}
 
 
 
@@ -51,25 +52,29 @@ def generate_recommendations():
     
     if 'saved_song' not in globals():
         return "No song selected. Please go back and select a song."
-
+    
     mood = request.form.get('mood')
-    location = request.form.get('location')
+    
+    artist_id = saved_song['artists'][0]['id']
+    artist = sp.artist(artist_id)
 
-    seed_genres = []
-    target_energy = 0
+    genres = artist['genres']
+    seed_genre = genres[0] if genres else None
+
     target_valence = 0
+    target_energy = 0
 
-    if 'happy' in mood:
-        seed_genres.append('happy')
-        target_energy +=0.5
-        target_valence = 0.8
-   
-    if 'sad' in mood:
-        seed_genres.append('sad')
-        target_energy +=0.1
-        target_valence = 0.1
+    if mood == "happy":
+        target_energy = 1
+        target_valence = 0.5
+    elif mood == "sad":
+        target_energy = 0.2
+        target_valence = 0
 
-    recommendations = sp.recommendations(seed_tracks=[saved_song['id']], seed_genres=seed_genres, target_energy=target_energy, target_valence=target_valence, limit=5)
+
+    recommendations = sp.recommendations(seed_tracks=[saved_song['id']], seed_genres=[seed_genre], target_valence=target_valence, target_energy=target_energy, limit=5)
+
+
 
     if 'tracks' in recommendations:
         playlist_data = recommendations['tracks']
