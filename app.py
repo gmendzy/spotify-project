@@ -69,7 +69,7 @@ def generate_recommendations():
         target_energy +=0.1
         target_valence = 0.1
 
-    recommendations = sp.recommendations(seed_genres=seed_genres, target_energy=target_energy, target_valence=target_valence, limit=10)
+    recommendations = sp.recommendations(seed_tracks=[saved_song['id']], seed_genres=seed_genres, target_energy=target_energy, target_valence=target_valence, limit=5)
 
     if 'tracks' in recommendations:
         playlist_data = recommendations['tracks']
