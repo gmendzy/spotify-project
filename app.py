@@ -55,17 +55,27 @@ def generate_recommendations():
     mood = request.form.get('mood')
     location = request.form.get('location')
 
-    if mood == 'happy':
-        recommendations = sp.recommendations(seed_tracks=[saved_song['id']], target_energy=0.8, limit=5)
-    elif mood == 'sad':
-        recommendations = sp.recommendations(seed_tracks=[saved_song['id']], seed_genres=['sad'], target_energy=0.1, limit=5)
-    
-    if location == 'home':
-        recommendations = sp.recommendatins(seed_tracks=[saved_song['id']], seed_genres=['chill', 'jazz'], target_energy=0.4, limit=5)
+    seed_genres = []
+    target_energy = 0
+    target_valence = 0
+
+    if 'happy' in mood:
+        seed_genres.append('happy')
+        target_energy +=0.5
+        target_valence = 0.8
+   
+    if 'sad' in mood:
+        seed_genres.append('sad')
+        target_energy +=0.1
+        target_valence = 0.1
+
+    recommendations = sp.recommendations(seed_genres=seed_genres, target_energy=target_energy, target_valence=target_valence, limit=10)
 
     if 'tracks' in recommendations:
         playlist_data = recommendations['tracks']
         return render_template('results.html', playlist_data=playlist_data)
+    else:
+        return "No recommendations were found with the desired mood."
 
 if __name__ == '__main__':
     app.run(debug=True)
