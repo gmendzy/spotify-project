@@ -54,6 +54,8 @@ def generate_recommendations():
         return "No song selected. Please go back and select a song."
     
     mood = request.form.get('mood')
+    target_valence = 0
+    target_energy = 0
     
     artist_id = saved_song['artists'][0]['id']
     artist = sp.artist(artist_id)
@@ -61,20 +63,15 @@ def generate_recommendations():
     genres = artist['genres']
     seed_genre = genres[0] if genres else None
 
-    target_valence = 0
-    target_energy = 0
-
-    if mood == "happy":
-        target_energy = 1
-        target_valence = 0.5
-    elif mood == "sad":
-        target_energy = 0.2
+    if 'happy' in mood:
+        target_energy += 0.4
+        target_valence += 0.3
+    elif 'sad' in mood:
+        target_energy += 0.2
         target_valence = 0
 
 
     recommendations = sp.recommendations(seed_tracks=[saved_song['id']], seed_genres=[seed_genre], target_valence=target_valence, target_energy=target_energy, limit=5)
-
-
 
     if 'tracks' in recommendations:
         playlist_data = recommendations['tracks']

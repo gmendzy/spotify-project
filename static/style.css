@@ -83,3 +83,14 @@
     .result.selected {
         background-color: #11de36;;
     }
+
+    .result {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .album-cover {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }

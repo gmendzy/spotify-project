@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Playlist Recommendations</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Your Recommended Playlist</h1>
+    <div class = "form-container">
+    <h1>MusicGenie Recommends</h1>
     <ul>
         {% for track in playlist_data %}
+        <div class = "result">
+            <img class = "album-cover" src="{{ track.album.images[0].url}}" alt = "{{ track.name }} album cover">
             <p>{{ track['name'] }} by {{ track['artists'][0]['name'] }}</p>
+        </div>
         {% endfor %}
     </ul>
 </body>
