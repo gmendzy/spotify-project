@@ -9,21 +9,67 @@
 </head>
 
 <body>
-    <div class = 'form-container'>
-    <h1>Question 1</h1>
-    <form action="/generate_playlist_from_questionnaire" method="post">
-        <label for="mood">What's your mood?</label>
-        <select id="mood" name="mood">
-            <option value="happy">Happy</option>
-            <option value="sad">Sad</option>
-            <input type="submit" value="Generate Playlist" />
-        </select>
-        <label for="location">Where are you?</label>
-        <select id="location" name="location">
-            <option value="gym">Gym</option>
-            <option value="beach">Beach</option>
-            <input type="submit" value="Generate Playlist" />
-    </form>
+    <div class='form-container'>
+        <h1>Questionnaire</h1>
+        <form action="/generate_playlist_from_questionnaire" method="post">
+            <div class="form-group">
+                <label>What's your mood?</label>
+                <div>
+                    <input type="radio" id="happy" name="mood" value="happy">
+                    <label for="happy">Happy</label>
+                </div>
+                <div>
+                    <input type="radio" id="sad" name="mood" value="sad">
+                    <label for="sad">Sad</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>What are you doing?</label>
+                <div>
+                    <input type="radio" id="party" name="activity" value="party">
+                    <label for="party">Party</label>
+                </div>
+                <div>
+                    <input type="radio" id="studying" name="activity" value="studying">
+                    <label for="studying">Studying</label>
+                </div>
+                <div>
+                    <input type="radio" id="chilling" name="activity" value="chilling">
+                    <label for="chilling">Chilling</label>
+                </div>
+                <div>
+                    <label>What time period?</label>
+                    <div>
+                    <input type="radio" id="90s" name ="time_period" value="90s">
+                    <label for="90s">90s</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="2000s" name ="time_period" value="2000s">
+                        <label for="2000s">2000s</label>
+                    </div>
+                </div>
+                <div>
+                    <label>Short or Long Songs?</label>
+                    <div>
+                    <input type="radio" id="short" name="duration" values="short">
+                    <label for ="short">Short - under 3 minutes</label>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" id="long" name="duration" values="long">
+                    <label for ="long">Long - over 3 minutes</label>
+                </div>
+                <div>
+                    <label>How popular are the songs?</label>
+                <div>
+                    <input type="radio" id="unpopular" name="popularity" values="unpopular">
+                    <label for="unpopular">Unpopular</label>
+                </div>
+            <div>
+                <button type="submit" class ="search-button">Generate Playlist</button>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
