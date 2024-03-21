@@ -58,6 +58,7 @@ def generate_recommendations():
     
     mood = request.form.get('mood')
     activity = request.form.get('activity')
+    
 
     saved_song_attributes = sp.audio_features(saved_song['id'])[0]
 
@@ -79,7 +80,7 @@ def generate_recommendations():
     if 'party' in activity:
         target_features['energy'] += 0.2 # Increase relative energy
     if 'chilling' in activity:
-        target_features['tempo' ] -= 10 # Decrease relative tempo
+        target_features['tempo' ] -= 20 # Decrease relative tempo
     
     
     # Ensure that the target features are within the valid range
@@ -93,18 +94,24 @@ def generate_recommendations():
         target_valence = target_features['valence'],
         target_energy = target_features['energy'],
         target_tempo = target_features['tempo'],
-        limit = 5
-
+        limit = 50
     )
 
+    duration = request.form.get('duration')
+    print(f"Duration: {duration}")
+    filtered_tracks = []
+    for track in recommendations['tracks']:
+        duration_ms = track['duration_ms']
+        if 'short' == duration and duration_ms <= 120000: # less than 2 minutes 
+            filtered_tracks.append(track)
+        if 'long' == duration and duration_ms > 240000: # more than 4 minutes
+            filtered_tracks.append(track)
         
-
-    
-
-    if 'tracks' in recommendations:
-        playlist_data = recommendations['tracks']
-        return render_template('results.html', playlist_data=playlist_data)
+    if filtered_tracks:
+        return render_template('results.html', playlist_data=filtered_tracks)
     else:
-        return "No recommendations were found with the desired mood."
+        return "No tracks found with the selected criteria. Please try again."
+
+
 if __name__ == '__main__':
     app.run(debug=True)
