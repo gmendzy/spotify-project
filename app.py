@@ -4,6 +4,7 @@ from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from dotenv import load_dotenv
 import os
 import datetime
+import random
 
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
@@ -58,10 +59,11 @@ def generate_recommendations():
     
     mood = request.form.get('mood')
     activity = request.form.get('activity')
+    duration = request.form.get('duration')
+    popularity = request.form.get('popularity') # Popularity is determined by the total number of plays a track has had and how recent those plays are
     
-
+    # Gets the audio features of the saved song and copies them to the target features so that we can modify them
     saved_song_attributes = sp.audio_features(saved_song['id'])[0]
-
     target_features = saved_song_attributes.copy()    
 
 
@@ -73,14 +75,16 @@ def generate_recommendations():
 
     if 'happy' in mood:
         target_features['valence'] += 0.4 # Increase relative valence
-    if 'sad' in mood:
+    elif 'sad' in mood:
         target_features['valence'] -= 0.2 # Decrease relative valence
+    
     if 'studying' in activity:
         target_features['energy'] -= 0.2 # Decrease relative energy
-    if 'party' in activity:
+    elif 'party' in activity:
         target_features['energy'] += 0.2 # Increase relative energy
-    if 'chilling' in activity:
+    elif 'chilling' in activity:
         target_features['tempo' ] -= 20 # Decrease relative tempo
+    
     
     
     # Ensure that the target features are within the valid range
@@ -88,24 +92,44 @@ def generate_recommendations():
     target_features['energy'] = min(max(target_features['energy'], 0), 1)
     target_features['tempo'] = min(max(target_features['tempo'], 0), 200)
 
+
     recommendations = sp.recommendations(
         seed_tracks =  [saved_song['id']],
         seed_genres = [seed_genre],
         target_valence = target_features['valence'],
         target_energy = target_features['energy'],
         target_tempo = target_features['tempo'],
-        limit = 50
+        limit = 75
     )
 
-    duration = request.form.get('duration')
-    print(f"Duration: {duration}")
+    # Filter tracks based on duration and popularity since the Spotify API does not support these parameters
     filtered_tracks = []
     for track in recommendations['tracks']:
         duration_ms = track['duration_ms']
-        if 'short' == duration and duration_ms <= 120000: # less than 2 minutes 
-            filtered_tracks.append(track)
-        if 'long' == duration and duration_ms > 240000: # more than 4 minutes
-            filtered_tracks.append(track)
+        popularity_number = track['popularity']
+        if 'short' in duration and duration_ms <= 120000: # less than 2 minutes
+            if 'popular' in popularity and popularity_number > 70:
+                filtered_tracks.append(track)
+            elif 'unpopular' in popularity and popularity_number < 30:
+                filtered_tracks.append(track)
+            elif 'no preference' in popularity:
+                filtered_tracks.append(track)
+        elif 'long' in duration and duration_ms > 240000: # more than 4 minutes
+            if 'popular' in popularity and popularity_number > 70:
+                filtered_tracks.append(track)
+            elif 'unpopular' in popularity and popularity_number < 30:
+                filtered_tracks.append(track)
+            elif 'no preference' in popularity:
+                filtered_tracks.append(track)
+        elif 'no preference' in duration:
+            if 'popular' in popularity and popularity_number > 70:
+                filtered_tracks.append(track)
+            elif 'unpopular' in popularity and popularity_number < 30:
+                filtered_tracks.append(track)
+            elif 'no preference' in popularity:
+                filtered_tracks.append(track)
+
+            
         
     if filtered_tracks:
         return render_template('results.html', playlist_data=filtered_tracks)

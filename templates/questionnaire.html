@@ -52,18 +52,30 @@
                     <label>Short or Long Songs?</label>
                     <div>
                     <input type="radio" id="short" name="duration" value="short">
-                    <label for ="short">Short - under 3 minutes</label>
+                    <label for ="short">Short - under 2 minutes</label>
                     </div>
                 </div>
                 <div>
                     <input type="radio" id="long" name="duration" value="long">
-                    <label for ="long">Long - over 3 minutes</label>
+                    <label for ="long">Long - over 4 minutes</label>
+                </div>
+                <div>
+                    <input type="radio" id="no preference" name="duration" value="no preference">
+                    <label for ="no preference">No preference</label>
                 </div>
                 <div>
                     <label>How popular are the songs?</label>
                 <div>
                     <input type="radio" id="unpopular" name="popularity" value="unpopular">
-                    <label for="unpopular">Unpopular</label>
+                    <label for="unpopular">Unpopular - Lower number of plays per track</label>
+                </div>
+                <div>
+                    <input type="radio" id="popular" name="popularity" value="popular">
+                    <label for="popular">Popular - Higher number of plays per track</label>
+                </div>
+                <div>
+                    <input type="radio" id="no preference" name="popularity" value="no preference">
+                    <label for="no preference">No preference</label>
                 </div>
             <div>
                 <button type="submit" class ="search-button">Generate Playlist</button>
