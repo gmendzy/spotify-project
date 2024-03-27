@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, session
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
+from datetime import datetime
 from dotenv import load_dotenv
 import os
-import datetime
 import random
 
 load_dotenv()
@@ -61,6 +61,7 @@ def generate_recommendations():
     activity = request.form.get('activity')
     duration = request.form.get('duration')
     popularity = request.form.get('popularity') # Popularity is determined by the total number of plays a track has had and how recent those plays are
+    time_period = request.form.get('time_period')
     
     # Gets the audio features of the saved song and copies them to the target features so that we can modify them
     saved_song_attributes = sp.audio_features(saved_song['id'])[0]
@@ -99,36 +100,34 @@ def generate_recommendations():
         target_valence = target_features['valence'],
         target_energy = target_features['energy'],
         target_tempo = target_features['tempo'],
-        limit = 75
+        limit = 100
     )
 
     # Filter tracks based on duration and popularity since the Spotify API does not support these parameters
+    conditions = {
+        'short': lambda track: track['duration_ms'] <= 120000,
+        'long': lambda track: track['duration_ms'] > 240000,
+        'popular': lambda track: track['popularity'] > 70,
+        'unpopular': lambda track: track['popularity'] < 30,
+        'no preference': lambda track: True,
+    }
+
+    time_periods = {
+        '90s' : ('1990-01-01', '1999-12-31'),
+        '2000s' : ('2000-01-01', '2009-12-31'),
+        '2010s' : ('2010-01-01', '2019-12-31'),
+    }
+    start_date, end_date = time_periods[time_period]
+    
+    
     filtered_tracks = []
     for track in recommendations['tracks']:
-        duration_ms = track['duration_ms']
-        popularity_number = track['popularity']
-        if 'short' in duration and duration_ms <= 120000: # less than 2 minutes
-            if 'popular' in popularity and popularity_number > 70:
-                filtered_tracks.append(track)
-            elif 'unpopular' in popularity and popularity_number < 30:
-                filtered_tracks.append(track)
-            elif 'no preference' in popularity:
-                filtered_tracks.append(track)
-        elif 'long' in duration and duration_ms > 240000: # more than 4 minutes
-            if 'popular' in popularity and popularity_number > 70:
-                filtered_tracks.append(track)
-            elif 'unpopular' in popularity and popularity_number < 30:
-                filtered_tracks.append(track)
-            elif 'no preference' in popularity:
-                filtered_tracks.append(track)
-        elif 'no preference' in duration:
-            if 'popular' in popularity and popularity_number > 70:
-                filtered_tracks.append(track)
-            elif 'unpopular' in popularity and popularity_number < 30:
-                filtered_tracks.append(track)
-            elif 'no preference' in popularity:
-                filtered_tracks.append(track)
+        album = sp.album(track['album']['id'])
+        release_date = album['release_date']
 
+        if (conditions[duration](track) and conditions[popularity](track) and 
+            start_date <= release_date <= end_date):
+            filtered_tracks.append(track)
             
         
     if filtered_tracks:
