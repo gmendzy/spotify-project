@@ -27,13 +27,20 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/search', methods=['POST'])
+@app.route('/search')
 def search():
-    song_name = request.form.get('song_name')
-    results = sp.search(q=song_name, limit=5)
+    q = request.args.get('song_name')
+
+    if q:
+        results = sp.search(q=q, limit=9)
+    else:
+        results = []
+
     return render_template('search_results.html', results=results['tracks']['items'])
 
-
+@app.route('/submit')
+def submit():
+    return render_template('submit.html')
 
 @app.route('/choose_song', methods=['POST', 'GET'])
 def choose_song():

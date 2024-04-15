@@ -10,7 +10,6 @@
 
 <body>
     <div class='form-container'>
-        <h1>Questionnaire</h1>
         <form action="/generate_playlist_from_questionnaire" method="post">
             <div class="form-group">
                 <label>What's your mood?</label>
@@ -22,8 +21,11 @@
                     <input type="radio" id="sad" name="mood" value="sad">
                     <label for="sad">Sad</label>
                 </div>
+
+                
             </div>
             <div class="form-group">
+                <br>
                 <label>What are you doing?</label>
                 <div>
                     <input type="radio" id="party" name="activity" value="party">
@@ -36,8 +38,10 @@
                 <div>
                     <input type="radio" id="chilling" name="activity" value="chilling">
                     <label for="chilling">Chilling</label>
+                    
                 </div>
                 <div>
+                    <br>
                     <label>What time period?</label>
                     <div>
                     <input type="radio" id="90s" name ="time_period" value="90s">
@@ -53,6 +57,7 @@
                     </div>
                 </div>
                 <div>
+                    <br>
                     <label>Short or Long Songs?</label>
                     <div>
                     <input type="radio" id="short" name="duration" value="short">
@@ -66,8 +71,10 @@
                 <div>
                     <input type="radio" id="no preference" name="duration" value="no preference">
                     <label for ="no preference">No preference</label>
+                    <br>
                 </div>
                 <div>
+                    <br>
                     <label>How popular are the songs?</label>
                 <div>
                     <input type="radio" id="unpopular" name="popularity" value="unpopular">
@@ -81,7 +88,7 @@
                     <input type="radio" id="no preference" name="popularity" value="no preference">
                     <label for="no preference">No preference</label>
                 </div>
-            <div>
+            <div class = 'generate-playlist-bttn'>
                 <button type="submit" class ="search-button">Generate Playlist</button>
             </div>
         </form>
