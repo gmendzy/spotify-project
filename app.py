@@ -111,7 +111,7 @@ def generate_recommendations():
         'unpopular': lambda track: track['popularity'] < 30,
         'no preference': lambda track: True,
     }
-
+    
     time_periods = {
         '90s' : ('1990-01-01', '1999-12-31'),
         '2000s' : ('2000-01-01', '2009-12-31'),
