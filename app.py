@@ -1,22 +1,53 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
+from spotipy.cache_handler import FlaskSessionCacheHandler
 from datetime import datetime
 from dotenv import load_dotenv
 import os
 import random
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(64)
+
+
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
+redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
 
 
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 sp = Spotify(client_credentials_manager=client_credentials_manager)
 
 
-app = Flask(__name__)
+#For creating playlists
+scope = 'playlist-modify-public'
 
+
+cache_handler = FlaskSessionCacheHandler(session)
+
+#For connecting to Spotify
+sp_oauth = SpotifyOAuth(
+    client_id = client_id,
+    client_secret=client_secret,
+    redirect_uri=redirect_uri,
+    scope=scope,
+    cache_handler=cache_handler,
+    show_dialog=True
+)
+
+spLogin = Spotify(auth_manager=sp_oauth)
+
+
+
+
+
+
+
+
+
+filtered_tracks = []
 saved_song = {}
 saved_genre ={}
 
@@ -26,6 +57,18 @@ saved_genre ={}
 def index():
     return render_template('index.html')
 
+
+
+@app.route('/login')
+def connect_spotify():
+    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+        auth_url = sp_oauth.get_authorize_url()
+        return redirect(auth_url)
+    
+@app.route('/callback')
+def callback():
+    sp_oauth.get_access_token(request.args['code'])
+    return redirect('/create_playlist')
 
 @app.route('/search')
 def search():
@@ -50,6 +93,31 @@ def choose_song():
     saved_song = sp.track(song_id)
     return redirect('/questionnaire')  
 
+@app.route('/create_playlist')
+def create_playlist():
+    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+        auth_url = sp_oauth.get_authorize_url()
+        return redirect(auth_url)
+    
+    user = spLogin.current_user()
+    user_ID = user['id']
+
+
+    
+    playlist = spLogin.user_playlist_create(user=f"{user_ID}", name="MusicGenie Playlist",
+                                             public=True, description="Created by MusicGenie"
+                                             )
+    
+    playlist_ID = playlist['id']
+
+
+    track_uris = [song['uri'] for song in filtered_tracks]
+    print(track_uris)
+
+    spLogin.user_playlist_add_tracks(user=f"{user_ID}",playlist_id = playlist_ID,
+                                          tracks=track_uris)
+    
+    return redirect("/generate_playlist_from_questionnaire")
 
 
 @app.route('/questionnaire')
@@ -127,7 +195,7 @@ def generate_recommendations():
     start_date, end_date = time_periods[time_period]
     
     
-    filtered_tracks = []
+    
     for track in recommendations['tracks']:
         album = sp.album(track['album']['id'])
         release_date = album['release_date']

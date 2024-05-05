@@ -45,9 +45,6 @@ header {
     text-decoration: none;
 }
 
-.links li:hover {
-    text-decoration: underline;
-}
 
 .form-container {
     border-radius: 50% 20% / 10% 40%;
@@ -130,6 +127,10 @@ body {
     
 }
 
+.result-final {
+    margin-bottom:50px;
+}
+
 .search-button {
     background-color: #17959c;
     color:white;
@@ -139,6 +140,10 @@ body {
     margin-top: 30px;
     height: 50px;
     transition-duration: 0.4s;
+}
+
+.connect{
+    padding: 15px 15px;
 }
 
 .search-button:hover {
@@ -207,10 +212,11 @@ audio {
  
 }
 
-.form-container {
+.q-form-container {
     max-width: 700px;
     display:flex;
     justify-content: center;
+    margin: 0 auto;
     padding: 20px;
     border-bottom: 4px #17959c solid;
     border-right: 4px #17959c solid;
@@ -221,4 +227,13 @@ audio {
 .generate-playlist-bttn {
     display:flex;
     justify-content: center;
+}
+
+.result-form-container {
+    margin: 0 auto;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+    max-width: 1000px;
 }

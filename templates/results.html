@@ -7,13 +7,26 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class = "form-container">
+    <div class = "result-form-container">
     <h1>MusicGenie Recommends</h1>
+    <header>
+        <ul class="links">
+            <li>
+                Want to turn these recommendations into a Spotify playlist?
+            </li>
+            <li>
+                <a class = "search-button connect" href="login" action="/login" method="POST">Connect your Spotify</a>
+            </li>
+        </ul>
+    </header>
     <ul>
         {% for track in playlist_data %}
-        <div class = "result">
+        <div class = "result result-final">
             <img class = "album-cover" src="{{ track.album.images[0].url}}" alt = "{{ track.name }} album cover">
-            <p>{{ track['name'] }} by {{ track['artists'][0]['name'] }}</p>
+            <p>{{ track['name'] }} <br> by {{ track['artists'][0]['name'] }}</p>
+
+            <audio controls controls-list="nodurationchange nodownload nofullscreen noremoteplayback" 
+                src="{{track.preview_url}}" class="webplayer"> Link</audio>
         </div>
         {% endfor %}
     </ul>

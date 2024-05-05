@@ -26,14 +26,7 @@
     <title>MusicGenie</title>
 </head>
 <header>
-    <ul class="links">
-        <li>
-            <a href="/about">About</a>
-        </li>
-        <li>
-            <a href="Login">Connect your Spotify</a>
-        </li>
-    </ul>
+
 </header>
 <body>
     <div class="title-container">
@@ -43,7 +36,8 @@
     <div class ="form-container">
         <form class='search-container' action="/search" method="POST">
             <label for="song_name"></label>
-            <input type="search" class="search-bar" id="song_name" name="song_name" placeholder="Enter your favorite song!" hx-get="/search" hx-trigger="keyup changed delay:500ms"
+            <input type="search" class="search-bar" id="song_name" name="song_name" 
+                    placeholder="Enter your favorite song!" hx-get="/search" hx-trigger="keyup changed delay:500ms"
                     hx-target="#results" required>
             <span class="material-symbols-outlined">search</span>
         </form>
