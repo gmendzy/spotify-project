@@ -153,6 +153,8 @@ def generate_recommendations():
         target_features['valence'] += 0.4 # Increase relative valence
     elif 'sad' in mood:
         target_features['valence'] -= 0.2 # Decrease relative valence
+    elif 'Neither' in mood:
+        target_features = target_features # No change in valence
     
     if 'studying' in activity:
         target_features['energy'] -= 0.2 # Decrease relative energy
@@ -191,6 +193,7 @@ def generate_recommendations():
         '90s' : ('1990-01-01', '1999-12-31'),
         '2000s' : ('2000-01-01', '2009-12-31'),
         '2010s' : ('2010-01-01', '2019-12-31'),
+        '2020s' : ('2020-01-01', '2021-12-31')
     }
     start_date, end_date = time_periods[time_period]
     
