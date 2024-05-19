@@ -117,7 +117,7 @@ def create_playlist():
     spLogin.user_playlist_add_tracks(user=f"{user_ID}",playlist_id = playlist_ID,
                                           tracks=track_uris)
     
-    return redirect("/generate_playlist_from_questionnaire")
+    return redirect("/")
 
 
 @app.route('/questionnaire')
