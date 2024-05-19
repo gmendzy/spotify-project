@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Questionnaire</title>
+</head>
+
+<body>
+    <div class='q-form-container'>
+        <form action="/generate_playlist_from_questionnaire" method="post">
+            <div class="form-group">
+                <label>What's your mood?</label>
+                <div>
+                    <input type="radio" id="happy" name="mood" value="happy">
+                    <label for="happy">Happy</label>
+                </div>
+                <div>
+                    <input type="radio" id="sad" name="mood" value="sad">
+                    <label for="sad">Sad</label>
+                </div>
+                <div>
+                    <input type="radio" id="Neither" name="mood" value="Neither">
+                    <label for="Neither">Neither</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <br>
+                <label>What are you doing?</label>
+                <div>
+                    <input type="radio" id="party" name="activity" value="party">
+                    <label for="party">Party</label>
+                </div>
+                <div>
+                    <input type="radio" id="studying" name="activity" value="studying">
+                    <label for="studying">Studying</label>
+                </div>
+                <div>
+                    <input type="radio" id="chilling" name="activity" value="chilling">
+                    <label for="chilling">Chilling</label>
+                </div>
+                <div>
+                    <br>
+                    <label>What time period?</label>
+                    <div>
+                    <input type="radio" id="90s" name ="time_period" value="90s">
+                    <label for="90s">90s</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="2000s" name ="time_period" value="2000s">
+                        <label for="2000s">2000s</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="2010s" name ="time_period" value="2010s">
+                        <label for="2010s">2010s</label>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" id="2010s" name ="time_period" value="2020s">
+                    <label for="2020s">2020s</label>
+                </div>
+                <div>
+                    <br>
+                    <label>Short or Long Songs?</label>
+                    <div>
+                    <input type="radio" id="short" name="duration" value="short">
+                    <label for ="short">Short - under 2 minutes</label>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" id="long" name="duration" value="long">
+                    <label for ="long">Long - over 4 minutes</label>
+                </div>
+                <div>
+                    <input type="radio" id="no preference" name="duration" value="no preference">
+                    <label for ="no preference">No preference</label>
+                    <br>
+                </div>
+                <div>
+                    <br>
+                    <label>How popular are the songs?</label>
+                <div>
+                    <input type="radio" id="unpopular" name="popularity" value="unpopular">
+                    <label for="unpopular">Unpopular - Lower number of plays per track</label>
+                </div>
+                <div>
+                    <input type="radio" id="popular" name="popularity" value="popular">
+                    <label for="popular">Popular - Higher number of plays per track</label>
+                </div>
+                <div>
+                    <input type="radio" id="no preference" name="popularity" value="no preference">
+                    <label for="no preference">No preference</label>
+                </div>
+            <div class = 'generate-playlist-bttn'>
+                <button type="submit" class ="search-button">Generate Playlist</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
